@@ -4,18 +4,24 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const http = require("http");
 const { Server } = require("socket.io");
+const RedisStore = require("connect-redis")(session); // افزودن RedisStore
+const redis = require("redis"); // وارد کردن کلاینت Redis
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+// تنظیمات اتصال به Redis
+const redisClient = redis.createClient(); // اتصال به Redis، می‌توانید پیکربندی‌های اضافی را هم اعمال کنید
+
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
+  store: new RedisStore({ client: redisClient }), // استفاده از RedisStore
   secret: "رمز_سری_شما",
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 24*60*60*1000 }
+  cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }));
 
 // ذخیره کاربران
