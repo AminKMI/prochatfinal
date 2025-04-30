@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>ورود / ثبت‌نام</title>
+  <link href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; font-family: 'Vazir', sans-serif; }
+    body {
+      background: #f0f2f5; margin: 0;
+      display: flex; align-items: center; justify-content: center;
+      height: 100vh;
+    }
+    .box {
+      background: #fff; padding: 2rem; border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1); width: 320px; text-align: center;
+    }
+    input, button {
+      width: 100%; padding: 12px; margin: 10px 0;
+      border: 1px solid #ccc; border-radius: .5rem; font-size: 15px;
+    }
+    button {
+      background: #00bcd4; color: #fff; border: none; cursor: pointer;
+      transition: .3s;
+    }
+    button:hover { background: #0097a7; }
+    .toggle {
+      color: #00bcd4; cursor: pointer; font-weight: bold;
+    }
+    .error { color: red; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2 id="title">ورود</h2>
+    <form id="authForm" action="/auth" method="post">
+      <input type="hidden" name="type" id="formType" value="login">
+      <input name="username" placeholder="نام کاربری" required>
+      <input name="password" type="password" placeholder="رمز عبور" required>
+      <button type="submit" id="mainBtn">ورود</button>
+    </form>
+    <div class="error">
+      <script>
+        const p = new URLSearchParams(location.search).get("error");
+        if (p === "exists") document.write("این نام کاربری از قبل وجود دارد.");
+        else if (p === "bad") document.write("نام‌کاربری یا رمز اشتباه است.");
+      </script>
+    </div>
+    <div>
+      <span id="toggleText">ثبت‌نام نکرده‌اید؟</span>
+      <span class="toggle" id="toggleLink">ثبت‌نام</span>
+    </div>
+  </div>
+
+  <script>
+    const toggleLink = document.getElementById("toggleLink");
+    const toggleText = document.getElementById("toggleText");
+    const title = document.getElementById("title");
+    const mainBtn = document.getElementById("mainBtn");
+    const formType = document.getElementById("formType");
+
+    toggleLink.onclick = () => {
+      if (formType.value === "login") {
+        formType.value = "register";
+        title.textContent = "ثبت‌نام";
+        mainBtn.textContent = "ثبت‌نام";
+        toggleText.textContent = "قبلاً ثبت‌نام کرده‌اید؟";
+        toggleLink.textContent = "ورود";
+      } else {
+        formType.value = "login";
+        title.textContent = "ورود";
+        mainBtn.textContent = "ورود";
+        toggleText.textContent = "ثبت‌نام نکرده‌اید؟";
+        toggleLink.textContent = "ثبت‌نام";
+      }
+    };
+  </script>
+</body>
+</html>
